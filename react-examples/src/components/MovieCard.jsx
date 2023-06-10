@@ -1,4 +1,13 @@
-const MovieCard = ({ movie, deleteHandler }) => {
+import { useState } from 'react';
+
+const MovieCard = ({ movie, deleteHandler, seenHandler }) => {
+  // const [seenMovie, setSeenMovie] = useState(false);
+
+  // const toggleMovie = () => {
+  //   // setSeenMovie(!seenMovie) -> WRONG!
+  //   setSeenMovie(previousValue => !previousValue);
+  // };
+
   return (
     <div>
       <h2>{movie.title}</h2>
@@ -12,6 +21,9 @@ const MovieCard = ({ movie, deleteHandler }) => {
 
       <button onClick={() => deleteHandler(movie._id)}>
         Delete this movie!
+      </button>
+      <button onClick={() => seenHandler(movie._id)}>
+        {movie.seen ? 'Mark as not seen' : 'Mark as seen'}
       </button>
     </div>
   );

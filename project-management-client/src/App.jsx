@@ -5,10 +5,13 @@ import Home from './pages/Home';
 import Projects from './pages/Projects';
 import ProjectDetails from './pages/ProjectDetails';
 import EditProject from './pages/EditProject';
+import { useContext } from 'react';
+import { ThemeContext } from './context/theme.context';
 
 function App() {
+  const { theme } = useContext(ThemeContext);
   return (
-    <div className='App'>
+    <div className={`App ${theme}`}>
       <Navbar />
 
       <Routes>

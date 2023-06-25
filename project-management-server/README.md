@@ -18,6 +18,14 @@
 | ------ | ---------- | ------------------ |
 | POST   | /api/tasks | Creates a new task |
 
+### Auth Routes
+
+| Method | Route       | Description        |
+| ------ | ----------- | ------------------ |
+| POST   | /api/signup | Creates a new user |
+| POST   | /api/login  | Logs the user      |
+| GET    | /api/verify | Verifies the JWT   |
+
 ## Models
 
 ### Project Model
@@ -37,5 +45,15 @@
   title: String,
   description: String,
   project: {type: Schema.Type.ObjectId, ref: 'Project'}
+}
+```
+
+### User Model
+
+```js
+{
+  name: String
+  email: String,
+  password: String,
 }
 ```

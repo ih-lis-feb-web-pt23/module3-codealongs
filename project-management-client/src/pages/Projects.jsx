@@ -28,6 +28,7 @@ const Projects = () => {
           return (
             <div key={project._id} className='ProjectCard card'>
               <h2>{project.title}</h2>
+              {project.imgUrl && <img src={project.imgUrl} width={50} />}
               <Link to={`/projects/${project._id}`}>See details</Link>
             </div>
           );

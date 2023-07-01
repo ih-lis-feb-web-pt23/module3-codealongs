@@ -1,7 +1,12 @@
+import { useContext } from 'react';
+import { AuthContext } from '../context/auth.context';
+
 const Home = () => {
+  const { user } = useContext(AuthContext);
+
   return (
     <div>
-      <h1>Welcome to Project Management</h1>
+      <h1>{user && `Hello ${user.name},`} Welcome to Project Management</h1>
     </div>
   );
 };

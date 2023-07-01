@@ -1,9 +1,11 @@
 import { useState } from 'react';
-import { addProject } from '../api/projects.api';
+import { addProject, upload } from '../api/projects.api';
+import { toast } from 'react-toastify';
 
 const AddProject = ({ refreshList }) => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
+  const [image, setImage] = useState();
 
   const handleTitle = event => {
     setTitle(event.target.value);
@@ -13,19 +15,37 @@ const AddProject = ({ refreshList }) => {
     setDescription(event.target.value);
   };
 
+  const handleImage = event => {
+    setImage(event.target.files[0]);
+  };
+
   const handleSubmit = async event => {
     event.preventDefault();
 
     try {
       const newProject = { title, description };
+
+      if (image) {
+        // create new FormData
+        // same as encoding type 'multipart/form-data'
+        const uploadData = new FormData();
+        // add image to form data
+        uploadData.append('file', image);
+        const response = await upload(uploadData);
+        newProject.imgUrl = response.data.fileUrl;
+      }
+
       await addProject(newProject);
+      toast.success('Project added successfully!');
       refreshList();
     } catch (error) {
+      toast.error('Something went wrong, try again later.');
       console.log('Error adding project', error);
     }
 
     setTitle('');
     setDescription('');
+    setImage();
   };
 
   return (
@@ -44,6 +64,9 @@ const AddProject = ({ refreshList }) => {
           rows='10'
           onChange={handleDescription}
         ></textarea>
+
+        <label htmlFor=''>Image</label>
+        <input type='file' onChange={handleImage} />
 
         <button type='submit'>Create Project</button>
       </form>

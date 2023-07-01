@@ -1,15 +1,17 @@
 const router = require('express').Router();
 const Project = require('../models/Project.model');
 const mongoose = require('mongoose');
+const fileUploader = require('../config/cloudinary.config');
 
 // Create a new project
 router.post('/projects', async (req, res, next) => {
-  const { title, description } = req.body;
+  const { title, description, imgUrl } = req.body;
 
   try {
     const newProject = await Project.create({
       title,
       description,
+      imgUrl,
       tasks: []
     });
 
@@ -102,6 +104,16 @@ router.delete('/projects/:id', async (req, res, next) => {
     res.json({ message: `Project with id ${id} as deleted successfully` });
   } catch (error) {
     console.log('An error occurred deleting the project', error);
+    next(error);
+  }
+});
+
+// route that receives the image, sends it to cloudinary and returns the image url
+router.post('/upload', fileUploader.single('file'), (req, res, next) => {
+  try {
+    res.json({ fileUrl: req.file.path });
+  } catch (error) {
+    res.status(500).json({ message: 'An error occurred uploading the image' });
     next(error);
   }
 });
